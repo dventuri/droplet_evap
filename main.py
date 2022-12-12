@@ -125,9 +125,25 @@ H_L = PropsSI('H','P',101325,'Q',0,'Water')
 # Latent heat of vaporization of Water at 1 atm in J/kg
 dH_water = H_V - H_L
 
-
-Bt = cp_vapor_Tmix*(T_gas - T_droplet)/(dH_water + 0/mdot)
+# start iterative procedure for heat transfer calculation
+QL = 0
+Bt = cp_vapor_Tmix*(T_gas - T_droplet)/(dH_water + QL/mdot)
 Ft = ((1 + Bt)**0.7)*log(1 + Bt)/Bt
 Nu_star = 2 + (Nu -2)/Ft
 phi = (cp_vapor_Tmix/cp_mix)*(Sh_star/Nu_star)*1/Le_mix
-Bt = (1 + Bm)**phi - 1
+Bt_n = (1 + Bm)**phi - 1
+
+counter = 0
+error = 1
+while(error > 1e-5):
+    if (counter > 100): break
+    Bt_old = Bt_n
+    Ft = ((1 + Bt_old)**0.7)*log(1 + Bt_old)/Bt_old
+    Nu_star = 2 + (Nu -2)/Ft
+    phi = (cp_vapor_Tmix/cp_mix)*(Sh_star/Nu_star)*1/Le_mix
+    Bt_n = (1 + Bm)**phi - 1
+    error = abs(Bt_n - Bt_old)
+    counter += 1
+print("counter = ", counter)
+
+QL = mdot*(cp_vapor_Tmix*(T_gas - T_droplet)/Bt_n - dH_water)
