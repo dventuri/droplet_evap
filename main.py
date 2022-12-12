@@ -136,7 +136,6 @@ Bt_n = (1 + Bm)**phi - 1
 counter = 0
 error = 1
 while(error > 1e-5):
-    if (counter > 100): break
     Bt_old = Bt_n
     Ft = ((1 + Bt_old)**0.7)*log(1 + Bt_old)/Bt_old
     Nu_star = 2 + (Nu -2)/Ft
@@ -144,6 +143,8 @@ while(error > 1e-5):
     Bt_n = (1 + Bm)**phi - 1
     error = abs(Bt_n - Bt_old)
     counter += 1
-print("counter = ", counter)
+    if((counter == 100) and (error > 1e-5)):
+        print("No convergence in heat transfer")
+        break
 
 QL = mdot*(cp_vapor_Tmix*(T_gas - T_droplet)/Bt_n - dH_water)
