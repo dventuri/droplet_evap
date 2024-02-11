@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 # Diameter plot
 exp_data = np.loadtxt("ranzmarshall_dp.csv", delimiter=",")
 dvt_data = np.loadtxt("water_air-dp.dat", delimiter=',')
+mfs_data = np.loadtxt("MFSim-dp.dat", delimiter=',')
 abg_data = np.loadtxt("ranzmarshall_abgail_AS.dat", delimiter=",")
 jam_data = np.loadtxt("dados_raio_mixAS_d2_com_epsilon.dat")
 
@@ -18,6 +19,10 @@ ax.yaxis.set_minor_locator(plt.MultipleLocator(0.1))
 ax.plot(dvt_data[:,0], (dvt_data[:,1]/dvt_data[0,1])**2,
     ls='-', color='k', #marker='o',
     label='Diego'
+)
+ax.plot(mfs_data[:,0], (mfs_data[:,1]/mfs_data[0,1])**2,
+    ls='-', color='b', #marker='o',
+    label='MFSim'
 )
 ax.plot(jam_data[:,0], jam_data[:,1]/jam_data[0,1],
     ls='-', color='r', #marker='s',
@@ -39,6 +44,7 @@ fig.savefig('water_air_droplet_diameter.png',dpi=1200,format='png')
 
 # Temperature plot
 dvt_data = np.loadtxt("water_air-Temp.dat", delimiter=',')
+mfs_data = np.loadtxt("MFSim-Temp.dat", delimiter=',')
 abg_data = np.loadtxt("temperature_abgail.dat", delimiter=',')
 jam_data = np.loadtxt("dados_temp_med_mixAS_d2_com_epsilon.dat")
 
@@ -53,6 +59,10 @@ ax.yaxis.set_minor_locator(plt.MultipleLocator(0.25))
 ax.plot(dvt_data[:,0], dvt_data[:,1],
     ls='-', color='k', #marker='o',
     label='Diego'
+)
+ax.plot(mfs_data[:,0], mfs_data[:,1],
+    ls='-', color='b', #marker='o',
+    label='MFSim'
 )
 ax.plot(jam_data[:,0], jam_data[:,1],
     ls='-', color='r', #marker='s',
