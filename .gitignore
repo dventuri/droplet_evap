@@ -1,2 +1,9 @@
 # Python compilation files
 __pycache__/
+
+# Data files
+*.dat
+*.png
+
+# specific files
+_*.py
