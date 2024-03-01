@@ -216,3 +216,25 @@ if __name__=='__main__':
                np.column_stack((t, sol[:,1])),
                fmt=['%8.6e','%9.5f'],
                delimiter=',')
+
+
+    # Water droplet in hot hydrocarbon gas
+    gas = ct.Solution('hc_water_mod.yaml')
+    gcomp1 = "C2H6:1.37E-02, NC6H14:3.45E-02, NC7H16:0.135360243, C9H19-1:0.361590943,"
+    gcomp2 = " C11H21:0.243069983, NC13H28:3.14E-02, H2O:0.180422265"
+    gas.TPY = 418.15, 124642.54753, gcomp1+gcomp2
+
+    y0 = [1E-5, 333.15]
+    t = np.linspace(0, 1.5, 15000001)
+
+    sol = odeint(dpm_model, y0, t, args=(gas, 'Water', 0))
+
+    np.savetxt("water_hcs-dp-10micra.dat",
+               np.column_stack((t, sol[:,0])),
+               fmt=['%9.7e','%13.11e'],
+               delimiter=',')
+
+    np.savetxt("water_hcs-Temp-10micra.dat",
+               np.column_stack((t, sol[:,1])),
+               fmt=['%9.7e','%9.5f'],
+               delimiter=',')
