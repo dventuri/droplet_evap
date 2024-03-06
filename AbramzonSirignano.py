@@ -8,7 +8,7 @@ from hamopy import ham_library as ham
 from aux import *
 from scipy.integrate import odeint
 
-def dpm_model(y, t, Ambient_Gas, Liquid, Rel_vel):
+def as_evap(y, t, Ambient_Gas, Liquid, Rel_vel):
 
     """
     Defines a model to solve the Abramzon-Sirignano evaporation
@@ -161,7 +161,7 @@ if __name__=='__main__':
     y0 = [1.048E-3, 282]
     t = np.linspace(0,800,800001)
 
-    sol = odeint(dpm_model, y0, t, args=(gas, 'Water', 0))
+    sol = odeint(as_evap, y0, t, args=(gas, 'Water', 0))
 
     np.savetxt("water_air-dp.dat",
                np.column_stack((t, sol[:,0])),
@@ -183,7 +183,7 @@ if __name__=='__main__':
     y0 = [1E-4, 333.15]
     t = np.linspace(0, 1.5, 1500001)
 
-    sol = odeint(dpm_model, y0, t, args=(gas, 'Water', 0))
+    sol = odeint(as_evap, y0, t, args=(gas, 'Water', 0))
 
     np.savetxt("water_hcs-dp-100micra.dat",
                np.column_stack((t, sol[:,0])),
@@ -205,7 +205,7 @@ if __name__=='__main__':
     y0 = [1E-3, 333.15]
     t = np.linspace(0, 1.5, 1500001)
 
-    sol = odeint(dpm_model, y0, t, args=(gas, 'Water', 0))
+    sol = odeint(as_evap, y0, t, args=(gas, 'Water', 0))
 
     np.savetxt("water_hcs-dp-1000micra.dat",
                np.column_stack((t, sol[:,0])),
@@ -227,7 +227,7 @@ if __name__=='__main__':
     y0 = [1E-5, 333.15]
     t = np.linspace(0, 1.5, 15000001)
 
-    sol = odeint(dpm_model, y0, t, args=(gas, 'Water', 0))
+    sol = odeint(as_evap, y0, t, args=(gas, 'Water', 0))
 
     np.savetxt("water_hcs-dp-10micra.dat",
                np.column_stack((t, sol[:,0])),
