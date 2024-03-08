@@ -2,7 +2,6 @@
 
 import numpy as np
 import cantera as ct
-import matplotlib.pyplot as plt
 from CoolProp.CoolProp import PropsSI
 from hamopy import ham_library as ham
 from aux import *
@@ -51,7 +50,7 @@ def as_evap(y, t, Ambient_Gas, Liquid, Rel_vel):
 
 
     # Molar composition at droplet surface
-    Liquid_name = Liquid.strip().lower()
+    Liquid_name = Liquid.strip()
     x_liq_surf = np.empty(N_spt)
     if(Liquid_name == 'water'):
         liquid_vapor_pressure = ham.p_sat(T_droplet)
