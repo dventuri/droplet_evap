@@ -42,10 +42,6 @@ def as_evap(y, t, Ambient_Gas, Liquid, Rel_vel):
 
     # Bulk gas-phase physical properties
     gas_rho = Ambient_Gas.density_mass
-    gas_mu = Ambient_Gas.viscosity
-    gas_k = Ambient_Gas.thermal_conductivity
-    gas_cp = Ambient_Gas.cp_mass
-    gas_D = Ambient_Gas.mix_diff_coeffs[-1]
     gas_Y_vapor = Ambient_Gas.Y[-1]
 
 
@@ -82,28 +78,18 @@ def as_evap(y, t, Ambient_Gas, Liquid, Rel_vel):
     Ambient_Gas.TPY = T_film, P_amb, Y_film
 
     # Film vapor-phase physical properties
-    film_D = Ambient_Gas.mix_diff_coeffs[-1]
     film_rho = Ambient_Gas.density_mass
+    film_mu = Ambient_Gas.viscosity
+    film_k = Ambient_Gas.thermal_conductivity
+    film_cp = Ambient_Gas.cp_mass
+    film_D = Ambient_Gas.mix_diff_coeffs_mass[-1]
 
 
     # Film, only vapor
     Ambient_Gas.TPY = T_film, P_amb, np.concatenate((np.zeros(N_gas),Y_film[-1]), axis=None)
 
     # Film vapor-phase physical properties
-    film_vapor_mu = Ambient_Gas.viscosity
-    film_vapor_k = Ambient_Gas.thermal_conductivity
     film_vapor_cp = Ambient_Gas.cp_mass
-
-
-    # Film, remaining gas
-    Ambient_Gas.TPY = T_film, P_amb, np.concatenate((Y_film[:-1], 0), axis=None)
-
-    # Film gas-phase physical properties
-    film_gas_rho = Ambient_Gas.density_mass
-    film_gas_mu = Ambient_Gas.viscosity
-    film_gas_k = Ambient_Gas.thermal_conductivity
-    film_gas_cp = Ambient_Gas.cp_mass
-    film_gas_D = Ambient_Gas.mix_diff_coeffs[-1]
 
 
     # Restore original Ambient Gas for next loop
@@ -111,11 +97,11 @@ def as_evap(y, t, Ambient_Gas, Liquid, Rel_vel):
 
 
     # Correlations
-    Re = gas_rho*abs(Rel_vel)*dp/gas_mu
+    Re = gas_rho*abs(Rel_vel)*dp/film_mu
     f_Re = calc_fRe(Re)
-    Le = film_gas_k/(film_gas_rho*film_D*film_gas_cp)
-    Pr = film_gas_cp*film_gas_mu/film_gas_k
-    Sc = film_gas_mu/(film_gas_rho*film_D)
+    Le = film_k/(film_rho*film_D*film_cp)
+    Pr = film_cp*film_mu/film_k
+    Sc = film_mu/(film_rho*film_D)
     Nu_0 = 1 + ((1 + Re*Pr)**(1/3))*f_Re
     Sh_0 = 1 + ((1 + Re*Sc)**(1/3))*f_Re
 
@@ -124,17 +110,17 @@ def as_evap(y, t, Ambient_Gas, Liquid, Rel_vel):
     Bm = (Y_liq_surf[-1] - gas_Y_vapor)/(1 - Y_liq_surf[-1])
     Fm = ((1 + Bm)**0.7)*(np.log(1+Bm)/Bm)
     Sh_star = 2 + (Sh_0 - 2)/Fm
-    mdot = np.pi*film_gas_rho*film_gas_D*dp*Sh_star*np.log(1+Bm)
+    mdot = np.pi*film_rho*film_D*dp*Sh_star*np.log(1+Bm)
 
 
     # Thermal quantities
     Ql = 0
-    Hl = PropsSI('H','P',P_amb,'Q',1,Liquid_name) - PropsSI('H','P',P_amb,'Q',0,Liquid_name)
+    Hl = PropsSI('H','T',T_droplet,'Q',1,Liquid_name) - PropsSI('H','T',T_droplet,'Q',0,Liquid_name)
     for k in range(50):
         Bt = film_vapor_cp*(T_gas - T_droplet)/(Hl + Ql/mdot)
         Ft = ((1 + Bt)**0.7)*(np.log(1+Bt)/Bt)
         Nu_star = 2 + (Nu_0 - 2)/Ft
-        phi = (film_vapor_cp/film_gas_cp)*(Sh_star/Nu_star)*(1/Le)
+        phi = (film_vapor_cp/film_cp)*(Sh_star/Nu_star)*(1/Le)
         Bt_n = (1+Bm)**phi - 1
         Ql = mdot*((film_vapor_cp*(T_gas - T_droplet))/Bt_n - Hl)
         if(abs(Bt_n - Bt) < 1E-12): break
