@@ -138,7 +138,7 @@ def as_evap(y, t, Ambient_Gas, Liquid, Rel_vel):
 
 if __name__=='__main__':
 
-    # Ranz-Marshall: Water droplet in stagnat air
+    # Ranz-Marshall: Water droplet in stagnant air
     gas = ct.Solution('air.yaml')
     gcomp = "O2:0.21, N2:0.78, AR:0.01, H2O:0"
     gas.TPX = 298, 101325, gcomp
