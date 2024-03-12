@@ -41,7 +41,6 @@ def as_evap(y, t, Ambient_Gas, Liquid, Rel_vel):
 
 
     # Bulk gas-phase physical properties
-    gas_rho = Ambient_Gas.density_mass
     gas_Y_vapor = Ambient_Gas.Y[-1]
 
 
@@ -97,7 +96,7 @@ def as_evap(y, t, Ambient_Gas, Liquid, Rel_vel):
 
 
     # Correlations
-    Re = gas_rho*abs(Rel_vel)*dp/film_mu
+    Re = film_rho*abs(Rel_vel)*dp/film_mu
     f_Re = calc_fRe(Re)
     Le = film_k/(film_rho*film_D*film_cp)
     Pr = film_cp*film_mu/film_k
