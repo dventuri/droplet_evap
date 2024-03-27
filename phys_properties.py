@@ -15,7 +15,7 @@ def pv_Perry():
 
 def Lv(T,Tc,M,A,B):
     Tr = T/Tc
-    return A*(1.0 - Tr)**B/M*1.0E6
+    return (A*(1.0 - Tr)**B)/M*1.0E6
 
 def rho(T, Tc, A, B, C):
     D = -(1 - T/Tc)**C
@@ -168,12 +168,12 @@ if __name__ == "__main__":
     fig, ax = plt.subplots()
     ax.set_xlabel(r'$T$ [$\degree$C]')
     ax.set_ylabel(r'$L_v$ [J/kg]')
-    ax.axis([25, 125, 2.9E5, 6.8E5])
+    ax.axis([25, 125, 2.9E5, 4E5])
     ax.xaxis.set_major_locator(plt.MultipleLocator(25))
     ax.xaxis.set_minor_locator(plt.MultipleLocator(12.5))
-    ax.yaxis.set_major_locator(plt.MultipleLocator(0.5E5))
-    ax.yaxis.set_minor_locator(plt.MultipleLocator(0.25E5))
-    ax.plot(T_droplet-273.15, Lv(T_droplet,540.13,100.21,50.28826,-0.217),
+    ax.yaxis.set_major_locator(plt.MultipleLocator(0.25E5))
+    ax.yaxis.set_minor_locator(plt.MultipleLocator(0.125E5))
+    ax.plot(T_droplet-273.15, Lv(T_droplet,540.13,100.21,50.28827,0.380468),
         ls='-', color='k',
         label='MFSim'
     )
@@ -215,7 +215,7 @@ if __name__ == "__main__":
     ax.xaxis.set_minor_locator(plt.MultipleLocator(12.5))
     ax.yaxis.set_major_locator(plt.MultipleLocator(500))
     ax.yaxis.set_minor_locator(plt.MultipleLocator(250))
-    ax.plot(T_droplet-273.15, cp(T_droplet,100.21,-98.7132,1.02021,-0.0031805,4.2735E-06),
+    ax.plot(T_droplet-273.15, cp(T_droplet,100.21,92.7132,1.02021,-0.0031805,4.2735E-06),
         ls='-', color='k',
         label='MFSim'
     )
@@ -236,7 +236,7 @@ if __name__ == "__main__":
     ax.xaxis.set_minor_locator(plt.MultipleLocator(12.5))
     ax.yaxis.set_major_locator(plt.MultipleLocator(0.1))
     ax.yaxis.set_minor_locator(plt.MultipleLocator(0.05))
-    ax.plot(T_droplet-273.15, k(T_droplet,-0.2167,-2.9108E-4,-7.6582E-08),
+    ax.plot(T_droplet-273.15, k(T_droplet,0.2167,-2.9108E-4,-7.6582E-08),
         ls='-', color='k',
         label='MFSim'
     )
