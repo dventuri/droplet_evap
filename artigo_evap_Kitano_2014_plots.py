@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 # Diameter plot
 d0 = 700E-6
 kit_data_00 = np.loadtxt("Kitano-00-dp.dat", delimiter=',')
+kit_mfsim_00 = np.loadtxt("Kitano-00-dp-MFSim.txt", delimiter=' ')
 kit_data_01 = np.loadtxt("Kitano-01-dp.dat", delimiter=',')
 kit_data_02 = np.loadtxt("Kitano-02-dp.dat", delimiter=',')
 kit_data_03 = np.loadtxt("Kitano-03-dp.dat", delimiter=',')
@@ -19,6 +20,10 @@ ax.yaxis.set_minor_locator(plt.MultipleLocator(0.1))
 ax.plot(kit_data_00[:,0]/(d0*1000)**2, (kit_data_00[:,1]**2)/d0**2,
     ls='-', color='k',
     label='0.1MPa,471K'
+)
+ax.scatter(kit_mfsim_00[:,0]/(d0*1000)**2, (kit_mfsim_00[:,1]**2)/d0**2,
+    c='white', marker='o', edgecolors='black',
+    label='0.1MPa,471K,MFSim'
 )
 ax.plot(kit_data_01[:,0]/(d0*1000)**2, (kit_data_01[:,1]**2)/d0**2,
     ls='--', color='orange',
@@ -40,6 +45,7 @@ fig.savefig('Kitano-low-dp.png',dpi=1200,format='png')
 
 # Temperature plot
 kit_data_00 = np.loadtxt("Kitano-00-Temp.dat", delimiter=',')
+kit_mfsim_00 = np.loadtxt("Kitano-00-Temp-MFSim.txt", delimiter=' ')
 kit_data_01 = np.loadtxt("Kitano-01-Temp.dat", delimiter=',')
 kit_data_02 = np.loadtxt("Kitano-02-Temp.dat", delimiter=',')
 kit_data_03 = np.loadtxt("Kitano-03-Temp.dat", delimiter=',')
@@ -55,6 +61,10 @@ ax.yaxis.set_minor_locator(plt.MultipleLocator(10))
 ax.plot(kit_data_00[:,0]/(d0*1000)**2, kit_data_00[:,1],
     ls='-', color='k',
     label='0.1MPa,471K'
+)
+ax.scatter(kit_mfsim_00[:,0]/(d0*1000)**2, kit_mfsim_00[:,1],
+    c='white', marker='o', edgecolors='black',
+    label='0.1MPa,471K,MFSim'
 )
 ax.plot(kit_data_01[:,0]/(d0*1000)**2, kit_data_01[:,1],
     ls='--', color='orange',
