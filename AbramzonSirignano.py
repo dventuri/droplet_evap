@@ -83,6 +83,21 @@ def as_evap(y, t, Ambient_Gas, Liquid, Rel_vel):
     film_cp = Ambient_Gas.cp_mass
     film_D = Ambient_Gas.mix_diff_coeffs_mass[-1]
 
+    if(False):
+        sigma = np.array([3.621, 5.644])
+        sigma_va = np.sum(sigma)/2
+
+        epsilon = np.array([97.53, 537.597])
+        epsilon_va = np.sqrt(epsilon[0]*epsilon[1])
+
+        Mv = Ambient_Gas.molecular_weights[1]
+        Ma = Ambient_Gas.molecular_weights[0]
+        Mva = 2/(1/Mv + 1/Ma)
+
+        T_mod = T_film/epsilon_va
+        Fc_D = 1.06036/(T_mod**0.15610) + 0.19300/np.exp(0.47635*T_mod) + 1.03587/np.exp(1.52996*T_mod) + 1.76474/np.exp(3.89411*T_mod)
+        film_D = (3.03 - 0.98/np.sqrt(Mva))*(T_film**1.5)/(P_amb*sigma_va**2*Fc_D*np.sqrt(Mva))*1E-2
+
 
     # Film, only vapor
     Ambient_Gas.TPY = T_film, P_amb, np.concatenate((np.zeros(N_gas),Y_film[-1]), axis=None)
