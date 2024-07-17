@@ -5,7 +5,7 @@ from AbramzonSirignano import as_evap
 
 # Kitano/Nomura: n-heptane droplet in stagnat air
 gas = ct.Solution('N2_n-Heptane.yaml')
-gas.transport_model = 'UnityLewis'
+gas.transport_model = 'Mix'
 # gcomp = "O2:0.21, N2:0.78, AR:0.01, H2O:0"
 gcomp = "N2:1"
 Ts = [471, 468, 466, 452]
